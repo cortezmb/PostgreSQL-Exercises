@@ -33,7 +33,7 @@
 --Perform a left outer join from the tech table to the project_uses_tech table - 
 --which techs has no associated project?
 -- SELECT
---     *
+--     name, tech_id
 -- FROM
 --     tech --name 1st table
 -- LEFT OUTER JOIN
@@ -43,3 +43,36 @@
 -- WHERE
 --     project_id IS NULL;
 
+--Based on the previous query, get the count of the number of techs used by each project.
+-- SELECT
+--     name, count(tech_id)
+-- FROM
+--     tech --name 1st table
+-- LEFT OUTER JOIN
+--     project_uses_tech --name second table
+-- ON
+--   tech.id = project_uses_tech.tech_id --match up like data of 1st and 2nd tables
+
+--Perform a left outer join from the project table to the project_users_tech table - which projects has no associated tech?
+-- SELECT
+--     project.name, project_uses_tech.tech_id
+-- FROM 
+--     project
+-- LEFT OUTER JOIN
+--     project_uses_tech
+-- ON
+--     project.id = project_uses_tech.project_id
+-- WHERE
+--     tech_id IS NULL;
+
+--Based on the previous query, get the count of the number of projects that use each tech.
+-- SELECT
+--    count(project_uses_tech.tech_id)
+-- FROM 
+--     project
+-- LEFT OUTER JOIN
+--     project_uses_tech
+-- ON
+--     project.id = project_uses_tech.project_id
+-- GROUP BY
+--     project_uses_tech.tech_id
