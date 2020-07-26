@@ -67,7 +67,7 @@
 
 --Based on the previous query, get the count of the number of projects that use each tech.
 -- SELECT
---    count(project_uses_tech.tech_id)
+--    project.*, count(project_uses_tech.tech_id)
 -- FROM 
 --     project
 -- LEFT OUTER JOIN
@@ -75,4 +75,96 @@
 -- ON
 --     project.id = project_uses_tech.project_id
 -- GROUP BY
---     project_uses_tech.tech_id
+--     project.id
+
+--List all projects along with each technology used by it. You will need to do a three-way join.
+-- SELECT
+--     project.name, tech.name
+-- FROM
+--     project
+-- INNER JOIN 
+--     project_uses_tech
+-- ON  
+--     project.id = project_uses_tech.project_id
+-- INNER JOIN
+--     tech
+-- ON
+--     project_uses_tech.tech_id = tech.id;
+
+--List all the distinct techs that are used by at least one project.
+-- SELECT
+--     distinct(tech.name)
+-- FROM
+--     project
+-- INNER JOIN 
+--     project_uses_tech
+-- ON  
+--     project.id = project_uses_tech.project_id
+-- INNER JOIN
+--     tech
+-- ON
+--     project_uses_tech.tech_id = tech.id;
+
+--List all the distinct techs that are not used by any projects.
+-- SELECT
+--     distinct(tech.name)
+-- FROM
+--     project
+-- RIGHT OUTER JOIN 
+--     project_uses_tech
+-- ON  
+--     project.id = project_uses_tech.project_id
+-- RIGHT OUTER JOIN
+--     tech
+-- ON
+--     project_uses_tech.tech_id = tech.id
+-- WHERE 
+--     project.id IS NULL;
+
+--List all the distinct projects that use at least one tech.
+-- SELECT
+--     distinct(project.name)
+-- FROM
+--     project
+-- RIGHT OUTER JOIN 
+--     project_uses_tech
+-- ON  
+--     project.id = project_uses_tech.project_id
+-- RIGHT OUTER JOIN
+--     tech
+-- ON
+--     project_uses_tech.tech_id = tech.id
+-- WHERE 
+--     project.id > 0;
+
+--List all the distinct projects that use no tech.
+-- SELECT
+--     distinct(project.name)
+-- FROM
+--     project
+-- RIGHT OUTER JOIN 
+--     project_uses_tech
+-- ON  
+--     project.id = project_uses_tech.project_id
+-- RIGHT OUTER JOIN
+--     tech
+-- ON
+--     project_uses_tech.tech_id = tech.id
+-- WHERE 
+--    tech.id IS NULL;
+
+--Order the projects by how many tech it uses.
+SELECT
+    project.name, count(project_uses_tech.project_id)
+FROM
+    project
+RIGHT OUTER JOIN 
+    project_uses_tech
+ON  
+    project.id = project_uses_tech.project_id
+RIGHT OUTER JOIN
+    tech
+ON
+    project_uses_tech.tech_id = tech.id
+ORDER BY 
+    project_uses_tech.project_id DESC;
